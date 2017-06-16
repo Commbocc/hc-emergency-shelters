@@ -70,3 +70,14 @@ export default {
 	}
 }
 </script>
+
+<style media="screen">
+.panel-default {
+	border-color: #ddd;
+}
+.panel-default > .panel-heading {
+	background: #f5f5f5;
+	border-color: #ddd;
+
+}
+</style>
