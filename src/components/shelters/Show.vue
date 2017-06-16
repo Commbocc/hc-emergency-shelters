@@ -16,7 +16,7 @@
 				</header>
 
 				<div class="alert" :class="statusAlertClass(shelter)">
-					<p class="status h3 text-center">
+					<p class="status h3 text-center" :class="statusTextClass(shelter)">
 						{{ shelter.STATUS1 }}
 					</p>
 				</div>
@@ -101,6 +101,7 @@ export default {
 		...mapGetters([
 			'isOpen',
 			'statusAlertClass',
+			'statusTextClass',
 			'googleMapLink',
 			'adaPlus',
 			'petsAllowed'

@@ -49,7 +49,7 @@ export default {
 	name: 'shelters',
 	data () {
 		return {
-			panel_title: 'Evacuation Shelters'
+			panel_title: 'Emergency Evacuation Shelters'
 		}
 	},
 	components: {

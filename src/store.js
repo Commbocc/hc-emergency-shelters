@@ -48,6 +48,9 @@ const shelters = {
 		},
 		statusAlertClass: (state, getters) => (shelter) => {
 			return (getters.isOpen(shelter)) ? 'alert-success' : 'alert-danger'
+		},
+		statusTextClass: (state, getters) => (shelter) => {
+			return (getters.isOpen(shelter)) ? 'text-success' : 'text-danger'
 		}
 	},
 	actions: {
