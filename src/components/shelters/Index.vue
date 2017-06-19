@@ -42,6 +42,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import IndexRow from '@/components/shelters/IndexRow'
 import Legend from '@/components/shelters/Legend'
 
@@ -56,17 +57,14 @@ export default {
 		'shelter-row': IndexRow,
 		'shelters-legend': Legend
 	},
-	methods: {
-		fetchShelters () {
-			var params = {
-				outFields: 'LOCATIONID,NAME,STATUS1,PETS,ADA',
-				where: "1=1"
-			}
-			this.$store.dispatch('fetchShelters', params)
-		}
-	},
+	methods: mapActions([
+		'fetchShelters'
+	]),
 	mounted () {
-		this.fetchShelters()
+		this.fetchShelters({
+			outFields: 'LOCATIONID,NAME,STATUS1,PETS,ADA',
+			where: "1=1"
+		})
 	}
 }
 </script>
@@ -78,6 +76,5 @@ export default {
 .panel-default > .panel-heading {
 	background: #f5f5f5;
 	border-color: #ddd;
-
 }
 </style>

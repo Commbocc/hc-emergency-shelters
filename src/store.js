@@ -23,7 +23,8 @@ const shelters = {
 	},
 	state: {
 		index: [],
-		selected: null
+		selected: null,
+		selected_status: 'Loading'
 	},
 	getters: {
 		isOpen: (state, getters) => (shelter) => {
@@ -64,12 +65,19 @@ const shelters = {
 			})
 		},
 		fetchShelter ({state, commit}, id) {
+			commit('setSelectedStatus', 'Loading')
 			return Vue.http.get(state.api.url, {
 				params: Object.assign({}, state.api.params, {where: `LOCATIONID = '${id}'`})
 			}).then(response => {
-				commit('setShelter', response.body.features.map(f => f.attributes)[0])
-			}, err => {
+				if (response.body.features && response.body.features.length) {
+					commit('setSelectedShelter', response.body.features.map(f => f.attributes)[0])
+				} else {
+					throw 'Shelter Not Found'
+				}
+			}).catch(err => {
 				console.error(err)
+				commit('setSelectedShelter', null)
+				commit('setSelectedStatus', err)
 			})
 		}
 	},
@@ -77,8 +85,11 @@ const shelters = {
 		setShelters (state, data) {
 			state.index = data
 		},
-		setShelter (state, data) {
+		setSelectedShelter (state, data) {
 			state.selected = data
+		},
+		setSelectedStatus (state, data) {
+			state.selected_status = data
 		}
 	}
 }

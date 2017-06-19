@@ -70,7 +70,7 @@
 			<div v-else class="modal-content">
 				<div class="modal-body">
 					<p class="h4 text-center">
-						Loading
+						{{ $store.state.shelters.selected_status }}
 					</p>
 				</div>
 			</div>
@@ -80,7 +80,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import Legend from '@/components/shelters/Legend'
 
 export default {
@@ -91,8 +91,13 @@ export default {
 	},
 	beforeRouteEnter (to, from, next) {
 		next(vm => {
-			vm.$store.dispatch('fetchShelter', to.params.id)
+			vm.fetchShelter(to.params.id)
 		})
+	},
+	watch: {
+		'$route': function() {
+			this.fetchShelter(this.id)
+		}
 	},
 	computed: {
 		shelter () {
@@ -108,6 +113,9 @@ export default {
 		])
 	},
 	methods: {
+		...mapActions([
+			'fetchShelter'
+		]),
 		showModal () {
 			$(this.$el).modal('show')
 		},
