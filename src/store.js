@@ -84,8 +84,6 @@ const shelters = {
 			})
 		},
 		initShelterMap ({state}, el) {
-			console.log('initShelterMap')
-
 			esriLoader.dojoRequire([
 				"esri/WebMap",
 				"esri/views/MapView",
@@ -117,7 +115,6 @@ const shelters = {
 				})
 				webmap.add(fl)
 			});
-
 		}
 	},
 	mutations: {
