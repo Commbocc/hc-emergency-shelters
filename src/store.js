@@ -1,11 +1,14 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-
 Vue.use(Vuex)
+
+import router from './router'
+
+import * as esriLoader from 'esri-loader'
 
 const api = {
 	state: {
-		url: 'https://maps.hillsboroughcounty.org/arcgis/rest/services/Heat/HEAT/FeatureServer/0/query',
+		url: 'https://maps.hillsboroughcounty.org/arcgis/rest/services/Heat/HEAT/FeatureServer/0',
 		params: {
 			f: 'json',
 			returnGeometry: false,
@@ -56,7 +59,7 @@ const shelters = {
 	},
 	actions: {
 		fetchShelters ({state, commit}, params={}) {
-			return Vue.http.get(state.api.url, {
+			return Vue.http.get(`${state.api.url}/query`, {
 				params: Object.assign({}, state.api.params, params)
 			}).then(response => {
 				commit('setShelters', response.body.features.map(f => f.attributes))
@@ -66,7 +69,7 @@ const shelters = {
 		},
 		fetchShelter ({state, commit}, id) {
 			commit('setSelectedStatus', 'Loading')
-			return Vue.http.get(state.api.url, {
+			return Vue.http.get(`${state.api.url}/query`, {
 				params: Object.assign({}, state.api.params, {where: `LOCATIONID = '${id}'`})
 			}).then(response => {
 				if (response.body.features && response.body.features.length) {
@@ -79,6 +82,42 @@ const shelters = {
 				commit('setSelectedShelter', null)
 				commit('setSelectedStatus', err)
 			})
+		},
+		initShelterMap ({state}, el) {
+			console.log('initShelterMap')
+
+			esriLoader.dojoRequire([
+				"esri/WebMap",
+				"esri/views/MapView",
+				"esri/layers/FeatureLayer"
+			], (WebMap, MapView, FeatureLayer) => {
+				var webmap = new WebMap({
+					portalItem: {
+						id: "b51fb4e76e154e1b93b630eac3ea94ae"
+					}
+				})
+				var mapview = new MapView({
+					container: el,
+					map: webmap
+				})
+				var fl = new FeatureLayer({
+					url: state.api.url,
+					outFields: ['LOCATIONID']
+				})
+				mapview.on('click', event => {
+					var screenPoint = {
+						x: event.x,
+						y: event.y
+					}
+					mapview.hitTest(screenPoint).then(response => {
+						if(response.results[0].graphic){
+							router.push({ name: 'SheltersShow', params: {id: response.results[0].graphic.attributes.LOCATIONID} })
+						}
+					})
+				})
+				webmap.add(fl)
+			});
+
 		}
 	},
 	mutations: {

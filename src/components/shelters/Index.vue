@@ -7,6 +7,13 @@
 					{{ panel_title }}
 				</h3>
 			</header>
+
+			<!-- map -->
+			<div class="embed-responsive embed-responsive-16by9">
+				<shelter-map></shelter-map>
+			</div>
+
+			<!-- table -->
 			<div class="table-responsive">
 				<table class="table table-striped table-condensed">
 					<thead v-if="$store.state.shelters.index.length">
@@ -16,7 +23,6 @@
 							<!-- <th>Notes</th> -->
 						</tr>
 					</thead>
-
 					<tbody v-if="$store.state.shelters.index.length">
 						<tr v-for="shelter in $store.state.shelters.index" is="shelter-row" :shelter="shelter"></tr>
 					</tbody>
@@ -27,9 +33,9 @@
 							</td>
 						</tr>
 					</tbody>
-
 				</table>
 			</div>
+
 			<footer class="panel-footer">
 				<shelters-legend></shelters-legend>
 			</footer>
@@ -45,6 +51,7 @@
 import { mapActions } from 'vuex'
 import IndexRow from '@/components/shelters/IndexRow'
 import Legend from '@/components/shelters/Legend'
+import ShelterMap from '@/components/shelters/Map'
 
 export default {
 	name: 'shelters',
@@ -55,7 +62,8 @@ export default {
 	},
 	components: {
 		'shelter-row': IndexRow,
-		'shelters-legend': Legend
+		'shelters-legend': Legend,
+		'shelter-map': ShelterMap
 	},
 	methods: mapActions([
 		'fetchShelters'
