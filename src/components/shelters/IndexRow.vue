@@ -14,8 +14,11 @@
 		<td>
 			<span class="label" :class="statusLabelClass(shelter)">{{ shelter.STATUS1 }}</span>
 
-			<span v-if="adaPlus(shelter)" class="label label-info">
+			<span class="label label-info">
 				<i class="fa fa-1x fa-wheelchair"></i>
+			</span>
+			<span v-if="adaPlus(shelter)" class="label label-info">
+				<i class="fa fa-1x fa-plus"></i>
 			</span>
 			<span v-if="petsAllowed(shelter)" class="label label-info">
 				<i class="fa fa-1x fa-paw"></i>

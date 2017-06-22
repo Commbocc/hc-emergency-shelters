@@ -30,8 +30,11 @@
 						<a :href="shelter.URL" target="_blank" class="btn btn-default btn-sm">
 							<i class="fa fa-fw fa-globe"></i> Website
 						</a>
-						<span v-if="adaPlus(shelter)" class="label label-info">
+						<span class="label label-info">
 							<i class="fa fa-fw fa-wheelchair"></i>
+						</span>
+						<span v-if="adaPlus(shelter)" class="label label-info">
+							<i class="fa fa-fw fa-plus"></i>
 						</span>
 						<span v-if="petsAllowed(shelter)" class="label label-info">
 							<i class="fa fa-fw fa-paw"></i>
